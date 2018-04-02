@@ -2,6 +2,9 @@ package com.mmall.pojo;
 
 import java.util.Date;
 
+/**
+ * 分类
+ */
 public class Category {
     private Integer id;
 

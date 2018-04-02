@@ -3,6 +3,9 @@ package com.mmall.pojo;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * 商品
+ */
 public class Product {
     private Integer id;
 
