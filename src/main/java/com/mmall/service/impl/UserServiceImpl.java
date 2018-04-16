@@ -43,6 +43,7 @@ public class UserServiceImpl implements IUserService {
         User user = userMapper.selectLogin(username, md5password);
         if (user == null) {
             return ServerResponse.createByErrorMessage("密码错误");
+
         }
         //前端不需要密码传入
         user.setPassword(StringUtils.EMPTY);

@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <!-- 打印到Catalina.out文件上 -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 编码 -->
         <encoding>UTF-8</encoding>
         <encoder>
+            <!-- 打印日志的格式 -->
             <pattern>[%d{HH:mm:ss.SSS}][%p][%c{40}][%t] %m%n</pattern>
         </encoder>
+        <!-- 级别：大于debug级别的都会显示 -->
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>DEBUG</level>
         </filter>
     </appender>
 
-    <!--项目日志-->
+    <!-- 项目的日志 -->
     <appender name="mmall" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--<File>d:/mmalllog/mmall.log</File>-->
-        <File>D:/tool/tomcat/apache-tomcat-8.5.28-windows-x64/apache-tomcat-8.5.28/logs/mmall.log</File>
+        <File>d:/mmalllog/mmall.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>D:/tool/tomcat/apache-tomcat-8.5.28-windows-x64/apache-tomcat-8.5.28/logs/mmall.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <fileNamePattern>d:/mmalllog/mmall.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
             <append>true</append>
             <maxHistory>10</maxHistory>
         </rollingPolicy>
@@ -27,9 +31,9 @@
 
     <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--<File>d:/mmalllog/error.log</File>-->
-        <File>D:/tool/tomcat/apache-tomcat-8.5.28-windows-x64/apache-tomcat-8.5.28/logs/error.log</File>
+        <File>d:/mmalllog/error.log.</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>D:/tool/tomcat/apache-tomcat-8.5.28-windows-x64/apache-tomcat-8.5.28/logs/error.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <fileNamePattern>d:/mmalllog/error.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
             <!--<fileNamePattern>d:/mmalllog/error.log.%d{yyyy-MM-dd}.gz</fileNamePattern>-->
             <append>true</append>
             <maxHistory>10</maxHistory>
@@ -56,18 +60,18 @@
     <logger name="com.mmall.dao" level="DEBUG"/>
 
     <!--<logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" level="DEBUG" >-->
-        <!--<appender-ref ref="console"/>-->
+    <!--<appender-ref ref="console"/>-->
     <!--</logger>-->
 
     <!--<logger name="java.sql.Connection" level="DEBUG">-->
-        <!--<appender-ref ref="console"/>-->
+    <!--<appender-ref ref="console"/>-->
     <!--</logger>-->
     <!--<logger name="java.sql.Statement" level="DEBUG">-->
-        <!--<appender-ref ref="console"/>-->
+    <!--<appender-ref ref="console"/>-->
     <!--</logger>-->
 
     <!--<logger name="java.sql.PreparedStatement" level="DEBUG">-->
-        <!--<appender-ref ref="console"/>-->
+    <!--<appender-ref ref="console"/>-->
     <!--</logger>-->
 
 
