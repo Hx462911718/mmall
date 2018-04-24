@@ -10,6 +10,7 @@ import com.mmall.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
@@ -52,9 +53,10 @@ public class ProductManageController {
 
     /**
      * 修改商品状态
+     *
      * @param session
      * @param productId 商品id
-     * @param status 商品状态
+     * @param status    商品状态
      * @return
      */
     @RequestMapping("set_sale_status.do'")
@@ -72,4 +74,49 @@ public class ProductManageController {
         }
     }
 
+    /**
+     * 后台商品详情
+     *
+     * @param session
+     * @param productId 商品id
+     * @return
+     */
+    @RequestMapping("detail.do'")
+    @ResponseBody
+    public ServerResponse getDetail(HttpSession session, Integer productId) {
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user == null) {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录管理员");
+        }
+        if (iUserService.checkAdminRole(user).isSuccess()) {
+            //获取商品详情
+            return iProductService.mangeProductDetail(productId);
+        } else {
+            return ServerResponse.createByErrorMessage("用户权限不足");
+        }
+    }
+
+    /**
+     * 后台获取商品List
+     *
+     * @param session
+     * @param pageNum 起始页
+     * @param pageSize 每页数量
+     * @return
+     */
+    @RequestMapping("list.do'")
+    @ResponseBody
+    public ServerResponse getList(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                  @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user == null) {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录管理员");
+        }
+        if (iUserService.checkAdminRole(user).isSuccess()) {
+            //分页查询productlist
+            return iProductService.getProductList(pageNum, pageSize);
+        } else {
+            return ServerResponse.createByErrorMessage("用户权限不足");
+        }
+    }
 }
