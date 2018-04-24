@@ -92,6 +92,7 @@ public class ProductServiceImpl implements IProductService {
 
     /**
      * 后台商品详情
+     *
      * @param productId 商品id
      * @return
      */
@@ -109,8 +110,9 @@ public class ProductServiceImpl implements IProductService {
         ProductDetailVo productDetailVo = setProductDetail(product);
         return ServerResponse.createBySuccess(productDetailVo);
     }
+
     //填充商品详情数据
-    private ProductDetailVo setProductDetail(Product product){
+    private ProductDetailVo setProductDetail(Product product) {
 
         ProductDetailVo productDetailVo = new ProductDetailVo();
         productDetailVo.setId(product.getId());
@@ -128,32 +130,33 @@ public class ProductServiceImpl implements IProductService {
         //parentCategoryId
         //crateTime
         //updatetime
-        productDetailVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://img.happymmall.com/"));
+        productDetailVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "http://img.happymmall.com/"));
         Category category = categoryMapper.selectByPrimaryKey(product.getCategoryId());
-        if (category == null){
+        if (category == null) {
             //默认根节点
             productDetailVo.setParentCategoryId(0);
         }
         productDetailVo.setParentCategoryId(category.getParentId());
         productDetailVo.setCreateTime(DatatimeUtil.dateToStr(product.getCreateTime()));
         productDetailVo.setUpdateTime(DatatimeUtil.dateToStr(product.getUpdateTime()));
-       return  productDetailVo;
+        return productDetailVo;
     }
 
     /**
      * 分页查询productList
-     * @param pageNum 起始页
+     *
+     * @param pageNum  起始页
      * @param pageSize 每页数量
      * @return
      */
     @Override
-    public ServerResponse<PageInfo> getProductList(int pageNum, int pageSize){
+    public ServerResponse<PageInfo> getProductList(int pageNum, int pageSize) {
         //startPage- index
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         //sql 逻辑
         List<Product> productList = productMapper.selectList();
         List<ProductListVo> productListVoList = new ArrayList<>();
-        for (Product product : productList){
+        for (Product product : productList) {
             ProductListVo productListVo = assembleProductListVo(product);
             productListVoList.add(productListVo);
         }
@@ -165,15 +168,16 @@ public class ProductServiceImpl implements IProductService {
 
     /**
      * 填充productListvo
+     *
      * @param product
      * @return
      */
-    private ProductListVo assembleProductListVo(Product product){
+    private ProductListVo assembleProductListVo(Product product) {
         ProductListVo productListVo = new ProductListVo();
         productListVo.setId(product.getId());
         productListVo.setName(product.getName());
         productListVo.setCategoryId(product.getCategoryId());
-        productListVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://img.happymmall.com/"));
+        productListVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "http://img.happymmall.com/"));
         productListVo.setMainImage(product.getMainImage());
         productListVo.setPrice(product.getPrice());
         productListVo.setSubtitle(product.getSubtitle());
@@ -181,4 +185,29 @@ public class ProductServiceImpl implements IProductService {
         return productListVo;
     }
 
+    /**
+     * 根据id或者name搜索商品
+     * @param productName 商品名字
+     * @param productId 商品id
+     * @param pageNum 起始页
+     * @param pageSize 每页大小
+     * @return
+     */
+    @Override
+    public ServerResponse<PageInfo> serachProduct(String productName, Integer productId, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        if (StringUtils.isNotBlank(productName)) {
+            productName = new StringBuilder().append("%").append(productName).append("%").toString();
+        }
+        List<Product> productList = productMapper.selectByNameAndProductId(productName, productId);
+        List<ProductListVo> productListVoList = new ArrayList<>();
+        for (Product product : productList) {
+            ProductListVo productListVo = assembleProductListVo(product);
+            productListVoList.add(productListVo);
+        }
+        //收尾
+        PageInfo pageResult = new PageInfo(productList);
+        pageResult.setList(productListVoList);
+        return ServerResponse.createBySuccess(pageResult);
+    }
 }
