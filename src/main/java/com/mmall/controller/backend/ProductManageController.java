@@ -12,10 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -39,7 +35,7 @@ public class ProductManageController {
      * @param product 商品
      * @return
      */
-    @RequestMapping("save.do'")
+    @RequestMapping("save.do")
     @ResponseBody
     public ServerResponse productSave(HttpSession session, Product product) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
@@ -62,7 +58,7 @@ public class ProductManageController {
      * @param status    商品状态
      * @return
      */
-    @RequestMapping("set_sale_status.do'")
+    @RequestMapping("set_sale_status.do")
     @ResponseBody
     public ServerResponse setSaleStatus(HttpSession session, Integer productId, Integer status) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
@@ -84,7 +80,7 @@ public class ProductManageController {
      * @param productId 商品id
      * @return
      */
-    @RequestMapping("detail.do'")
+    @RequestMapping("detail.do")
     @ResponseBody
     public ServerResponse getDetail(HttpSession session, Integer productId) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
@@ -107,7 +103,7 @@ public class ProductManageController {
      * @param pageSize 每页数量
      * @return
      */
-    @RequestMapping("list.do'")
+    @RequestMapping("list.do")
     @ResponseBody
     public ServerResponse getList(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                   @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
@@ -132,7 +128,7 @@ public class ProductManageController {
      * @param pageSize 每页数量
      * @return
      */
-    @RequestMapping("search.do'")
+    @RequestMapping("search.do")
     @ResponseBody
     public ServerResponse ProductSearch(HttpSession session,String productName, Integer productId,
                                         @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
